@@ -36,6 +36,7 @@ type PySide struct {
 }
 
 func (p *PySide) server() {
+	defer log.Println(pySocket, "stopped")
 	go func() {
 		l, err := net.Listen("unix", pySocket)
 		if err != nil {
@@ -98,6 +99,7 @@ func (p *PySide) Serve(sfu net.Conn) {
 					p.Println(sess, "py read", err)
 					return
 				}
+				log.Println(sess, "p->s", string(b))
 				// write and flush
 				w := bufio.NewWriter(sfu)
 				if _, err = w.WriteString(string(b) + "\n"); err != nil {
@@ -118,6 +120,7 @@ func (p *PySide) Serve(sfu net.Conn) {
 					p.Println(sess, "sfu read", err)
 					return
 				}
+				log.Println(sess, "s->p", string(b))
 				// write and flush
 				w := bufio.NewWriter(fd)
 				if _, err = w.WriteString(string(b) + "\n"); err != nil {

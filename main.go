@@ -13,6 +13,7 @@ const (
 )
 
 func main() {
+	defer log.Println(sfuSocket, "stopped")
 	os.Remove(pySocket)
 	os.Remove(sfuSocket)
 
@@ -30,7 +31,7 @@ func main() {
 			log.Println("accept", err)
 			os.Exit(1)
 		}
-
+		log.Println(sfuSocket, "accepted")
 		p.Serve(fd)
 		log.Println("in queue", atomic.AddInt32(&p.hold, 1))
 	}

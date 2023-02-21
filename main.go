@@ -13,6 +13,9 @@ const (
 )
 
 func main() {
+	os.Remove(pySocket)
+	os.Remove(sfuSocket)
+
 	p := NewPyServer()
 
 	l, err := net.Listen("unix", sfuSocket)

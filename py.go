@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"log"
 	"net"
 	"os"
@@ -60,7 +61,7 @@ func (p *PySide) start() {
 		t := time.Now()
 		p.Println("starting")
 		defer p.Println("stopped from", t)
-		cmd := exec.Command("/opt/flexapix/flexatar/realtime.sh", pySocket)
+		cmd := exec.CommandContext(context.Background(), "/bin/bash", "/opt/flexapix/flexatar/realtime.sh", pySocket)
 		err := cmd.Run()
 		p.Println("stopped", err)
 	}()

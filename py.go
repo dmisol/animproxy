@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"context"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -93,8 +94,9 @@ func (p *PySide) Serve(sfu net.Conn) {
 			defer fd.Close()
 			defer sfu.Close()
 			for {
-				var b []byte
-				_, err := fd.Read(b)
+				//var b []byte
+				b, err := ioutil.ReadAll(fd)
+				//_, err := fd.Read(b)
 				if err != nil {
 					p.Println(sess, "py read", err)
 					return
@@ -114,8 +116,10 @@ func (p *PySide) Serve(sfu net.Conn) {
 			defer fd.Close()
 			defer sfu.Close()
 			for {
-				var b []byte
-				_, err := sfu.Read(b)
+				//var b []byte
+				//_, err := sfu.Read(b)
+				b, err := ioutil.ReadAll(sfu)
+
 				if err != nil {
 					p.Println(sess, "sfu read", err)
 					return

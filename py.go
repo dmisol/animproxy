@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"context"
-	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -14,7 +13,7 @@ import (
 
 const (
 	idle2keep = 2
-	watchdog  = 10
+	watchdog  = 100
 )
 
 func NewPyServer() (p *PySide) {
@@ -94,17 +93,16 @@ func (p *PySide) Serve(sfu net.Conn) {
 			defer fd.Close()
 			defer sfu.Close()
 			for {
-				//var b []byte
-				b, err := ioutil.ReadAll(fd)
-				//_, err := fd.Read(b)
+				b := make([]byte, 2048)
+				i, err := fd.Read(b)
 				if err != nil {
 					p.Println(sess, "py read", err)
 					return
 				}
-				log.Println(sess, "p->s", string(b))
+				log.Println(sess, "p->s", string(b[:i]))
 				// write and flush
 				w := bufio.NewWriter(sfu)
-				if _, err = w.WriteString(string(b) + "\n"); err != nil {
+				if _, err = w.WriteString(string(b[:i]) + "\n"); err != nil {
 					p.Println(sess, "sfu write", err)
 					return
 				}
@@ -116,18 +114,16 @@ func (p *PySide) Serve(sfu net.Conn) {
 			defer fd.Close()
 			defer sfu.Close()
 			for {
-				//var b []byte
-				//_, err := sfu.Read(b)
-				b, err := ioutil.ReadAll(sfu)
-
+				b := make([]byte, 2048)
+				i, err := sfu.Read(b)
 				if err != nil {
 					p.Println(sess, "sfu read", err)
 					return
 				}
-				log.Println(sess, "s->p", string(b))
+				log.Println(sess, "s->p", string(b[:i]))
 				// write and flush
 				w := bufio.NewWriter(fd)
-				if _, err = w.WriteString(string(b) + "\n"); err != nil {
+				if _, err = w.WriteString(string(b[:i]) + "\n"); err != nil {
 					p.Println(sess, "fd write", err)
 					return
 				}

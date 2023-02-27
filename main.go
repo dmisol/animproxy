@@ -4,7 +4,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"sync/atomic"
 )
 
 const (
@@ -33,6 +32,5 @@ func main() {
 		}
 		log.Println(sfuSocket, "accepted")
 		p.Serve(fd)
-		log.Println("in queue", atomic.AddInt32(&p.hold, 1))
 	}
 }

@@ -169,7 +169,7 @@ func (p *PyDisp) Serve(sfu net.Conn) {
 					p.Println(sess, "py read", err)
 					return
 				}
-				log.Println(sess, "p->s", string(b[:i]))
+				//log.Println(sess, "p->s", string(b[:i]))
 				// write and flush
 				w := bufio.NewWriter(sfu)
 				if _, err = w.WriteString(string(b[:i]) + "\n"); err != nil {
@@ -190,7 +190,7 @@ func (p *PyDisp) Serve(sfu net.Conn) {
 					p.Println(sess, "sfu read", err)
 					return
 				}
-				log.Println(sess, "s->p", string(b[:i]))
+				//log.Println(sess, "s->p", string(b[:i]))
 				// write and flush
 				w := bufio.NewWriter(pc.Conn)
 				if _, err = w.WriteString(string(b[:i]) + "\n"); err != nil {

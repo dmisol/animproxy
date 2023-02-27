@@ -15,7 +15,7 @@ import (
 const (
 	idle2keep = 3
 	noRxWD    = 100
-	startWD   = 3
+	startWD   = 5
 )
 
 func NewPyServer() (p *PyDisp) {

@@ -59,8 +59,9 @@ func (p *PyDisp) wd() {
 }
 
 func (p *PyDisp) server() {
-	defer log.Println(pySocket, "stopped")
 	go func() {
+		defer log.Println(pySocket, "stopped")
+
 		l, err := net.Listen("unix", pySocket)
 		if err != nil {
 			p.Println("listen", err)

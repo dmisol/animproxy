@@ -1,7 +1,7 @@
 .MAIN: build
 
 build:
-	go build -o animproxy main.go pc.go py.go
+	go build -o animproxy main.go pyclient.go dispatcher.go
 
 run:
 	make build
